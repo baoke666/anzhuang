@@ -1,0 +1,35 @@
+ curl   线上安装扩展
+安装
+=============================
+1.进入线上php7的安装包   /soft/php-7.2.13
+2  cd ext/    (ext是扩展文件目录)
+3  ls(查看ext文件夹中的所有文件,包括隐藏的文件)   里面含有curl文件
+4  cd curl   (里面含有configure)
+5. 预编译   ./configure  --with-php-config=/usr/local/php7/bin/php-config
+6.编译并安装   make && make install  
+    (最后会出现一个目录,要记住这个目录
+/usr/local/php7/lib/php/extensions/no-debug-non-zts-20170718/)
+7.cd /usr/local/php7/lib/php/extensions/no-debug-non-zts-20170718/
+  (ll       会出现curl.so   说明安装成功)==============
+修改配置文件
+1. cd  /usr/local/php7/etc      (里面会有php.ini配置文件)
+2 vim php.ini      (进入配置文件)
+3       修改
+        3.1           732行下添加       
+        extension_dir = "/usr/local/php7/lib/php/extensions/no-debug-non-zts-20170718/" ;
+                   (刚才安装出现的路径)          3.2             910行下添加
+          extension = curl.so
+============================
+注:::/windows  回车  是查找   n 是查找下一个
+============================
+4.配置完要杀死php进程
+killall   php-fpm   (不出现任何东东)
+5.   重新启动php
+/usr/local/php7/sbin/php-fpm
+6.此时查看phpinfo();看有没有curl   
+  在任何一个控制器里写phpinfo();die;查看该路由,里面写的php.ini在  /usr/local/php7/lib里,但设置的       是在/usr/local/php7/etc 里,所以要复制到 /usr/local/php7/lib
+cp    /usr/local/php7/etc/php.ini   /usr/local/php7/lib/7.杀死php进程
+killall  php-fpm	
+8   启动
+/usr/local/php7/sbin/php-fpm
+9.再次查看phpinfo();搜curl有(目录),安装成功
